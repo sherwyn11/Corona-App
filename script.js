@@ -1,14 +1,14 @@
-var term = new Terminal()
+let term = new Terminal()
 term.open(document.getElementById('terminal'));
-var command = [];
-var data;
-var countries = {};
+let command = [];
+let data;
+let countries = {};
 
-var TotalDeaths;
-var TotalConfirmed;
-var TotalRecovered;
+let TotalDeaths;
+let TotalConfirmed;
+let TotalRecovered;
 
-var p = "Here is a list of commands you can use\r\n1. corona get all\r\n2. corona get country <country_name>\r\n3. corona get help\r\n\r\n$ ";
+let p = "Here is a list of commands you can use\r\n1. corona get all\r\n2. corona get country <country_name>\r\n3. corona get help\r\n\r\n$ ";
 
 const BASE_URL = 'https://api.covid19api.com/summary'
 
@@ -43,16 +43,16 @@ function runFakeTerminal() {
 
     term.onKey(e => {
 
-        var today = new Date();
-        var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date+' '+time;
+        let today = new Date();
+        let date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
+        let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        let dateTime = date+' '+time;
 
 
         const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
 
         if (e.domEvent.keyCode === 13) {
-            var word = ""
+            let word = ""
             for(const letter of command){
                 word += letter
             }
@@ -67,27 +67,31 @@ function runFakeTerminal() {
                 TotalRecovered = data.Global.TotalRecovered;
                 TotalDeaths = data.Global.TotalDeaths;
 
-                var op = "\r\n\r\nAs of " + dateTime + " the World has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
+                let op = "\r\n\r\nAs of " + dateTime + " the World has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
                 term.write(op);
                 prompt(term);
             }else if(word.includes('corona get country')){
 
-                var country = word.split('country')[1].trim()
+                let country = word.split('country')[1].trim()
 
                 if(countries[country] == undefined){
                     term.write('\r\nCan\'t find details of the entered country!\r\n');
                     prompt(term);
                 }else{
-                    var temp_data = countries[country]
+                    let temp_data = countries[country]
 
                     TotalConfirmed = temp_data.TotalConfirmed;
                     TotalRecovered = temp_data.TotalRecovered;
                     TotalDeaths = temp_data.TotalDeaths;
     
-                    var op = "\r\n\r\nAs of " + dateTime + " " + country + " has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
+                    let op = "\r\n\r\nAs of " + dateTime + " " + country + " has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
                     term.write(op);
                     prompt(term);
                 }
+            }else if(word === 'corona get help'){
+                let op = "\r\n\r\nHelpline Number: +91-11-23978046 \r\nHelpline Email ID: ncov2019@gov.in\r\n";
+                term.write(op);
+                prompt(term);
             }else if(word === 'clear'){
                 term.clear()
                 prompt(term)
@@ -99,7 +103,7 @@ function runFakeTerminal() {
         } else if (e.domEvent.keyCode === 8) {
             if (term._core.buffer.x > 2) {
                 term.write('\b \b');
-                var a = command.pop()
+                let a = command.pop()
             }
         } else if (printable) {
             command.push(e.key)
