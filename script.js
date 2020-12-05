@@ -1,4 +1,4 @@
-let term = new Terminal()
+var term = new Terminal()
 term.open(document.getElementById('terminal'));
 let command = [];
 let data;
@@ -39,7 +39,7 @@ function runFakeTerminal() {
     term.writeln('Use corona --help for help');
     term.writeln('Get updated with the latest news!');
     term.writeln('');
-    prompt(term);
+    prompt();
 
     term.onKey(e => {
 
@@ -59,7 +59,7 @@ function runFakeTerminal() {
             command = [];
 
             if(word === 'corona --help'){
-                prompt(term);
+                prompt();
                 term.write(p);
             }else if(word === 'corona get all'){
 
@@ -69,14 +69,14 @@ function runFakeTerminal() {
 
                 let op = "\r\n\r\nAs of " + dateTime + " the World has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
                 term.write(op);
-                prompt(term);
+                prompt();
             }else if(word.includes('corona get country')){
 
                 let country = word.split('country')[1].trim()
 
                 if(countries[country] == undefined){
                     term.write('\r\nCan\'t find details of the entered country!\r\n');
-                    prompt(term);
+                    prompt();
                 }else{
                     let temp_data = countries[country]
 
@@ -86,24 +86,23 @@ function runFakeTerminal() {
     
                     let op = "\r\n\r\nAs of " + dateTime + " " + country + " has: \r\n\r\nTotal Confirmed Cases : " + TotalConfirmed + "\r\nTotal Recovered : " + TotalRecovered + "\r\nTotal Deaths : " + TotalDeaths + "\r\n ";
                     term.write(op);
-                    prompt(term);
+                    prompt();
                 }
             }else if(word === 'corona get help'){
                 let op = "\r\n\r\nHelpline Number: +91-11-23978046 \r\nHelpline Email ID: ncov2019@gov.in\r\n";
                 term.write(op);
-                prompt(term);
+                prompt();
             }else if(word === 'clear'){
                 term.clear()
-                prompt(term)
+                prompt()
             }else{
                 term.write('\r\n Command not found! Use corona --help for help')
-                prompt(term);
+                prompt();
             }
 
         } else if (e.domEvent.keyCode === 8) {
             if (term._core.buffer.x > 2) {
                 term.write('\b \b');
-                let a = command.pop()
             }
         } else if (printable) {
             command.push(e.key)
@@ -112,7 +111,7 @@ function runFakeTerminal() {
     });
 }
 
-function prompt(term) {
+function prompt() {
     term.write('\r\n$ ');
 }
 runFakeTerminal();
